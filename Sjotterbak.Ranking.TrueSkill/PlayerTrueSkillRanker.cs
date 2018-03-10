@@ -6,7 +6,7 @@ using Moserware.Skills.TrueSkill;
 namespace Sjotterbak.Ranking.TrueSkill
 {
 
-    public class PlayerTrueSkillRanker : IPlayerRankingCalculator
+    public class PlayerTrueSkillCalculator : IPlayerRankingCalculator
     {
         private readonly GameInfo _gameInfo = GameInfo.DefaultGameInfo;
         private readonly SkillCalculator _calculator = new TwoTeamTrueSkillCalculator();

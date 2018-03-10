@@ -1,0 +1,24 @@
+﻿@page
+@using Sjotterbak.WebApi
+@model Sjotterbak.WebApi.IndexModel
+@{
+    foreach (var playerRanking in Model.Results.PlayerRankings)
+    {
+        <table>
+            <thead>
+                <tr>
+                    <td colspan="2">@playerRanking.Name</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ranking in playerRanking.Ranking)
+                {
+                    <tr>
+                        <td>@ranking.Name</td>
+                        <td>@ranking.Score</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}

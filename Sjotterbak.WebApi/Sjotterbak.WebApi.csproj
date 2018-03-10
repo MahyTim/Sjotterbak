@@ -5,8 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Pages\Index.cshtml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\App_Data\" />
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>

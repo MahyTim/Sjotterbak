@@ -9,15 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sjotterbak", "Sjotterbak\Sj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sjotterbak.Tests", "Sjotterbak.Tests\Sjotterbak.Tests.csproj", "{0F6444B0-C682-49D5-B101-1E20649A3728}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sjotterbak.Ranking.TrueSkill", "Sjotterbak.Ranking.TrueSkill\Sjotterbak.Ranking.TrueSkill.csproj", "{DB7979B9-0A32-406D-8B77-9607AED9E055}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sjotterbak.Ranking.TrueSkill", "Sjotterbak.Ranking.TrueSkill\Sjotterbak.Ranking.TrueSkill.csproj", "{DB7979B9-0A32-406D-8B77-9607AED9E055}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sjotterbak.Client", "Sjotterbak.Client\Sjotterbak.Client.csproj", "{4B7E4681-E1C7-4A0A-97CB-0F2D9D7126FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sjotterbak.Client", "Sjotterbak.Client\Sjotterbak.Client.csproj", "{4B7E4681-E1C7-4A0A-97CB-0F2D9D7126FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sjotterbak.Ranking.EasyStats", "Sjotterbak.Ranking.NumberOfWins\Sjotterbak.Ranking.EasyStats.csproj", "{7862E74D-833B-4DE0-B0F9-C23BE4C80C97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sjotterbak.Ranking.EasyStats", "Sjotterbak.Ranking.NumberOfWins\Sjotterbak.Ranking.EasyStats.csproj", "{7862E74D-833B-4DE0-B0F9-C23BE4C80C97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sjotterbak.Ranking.Elo", "Sjotterbak.Ranking.Elo\Sjotterbak.Ranking.Elo.csproj", "{941E8774-3E48-4344-B109-37767210D8AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sjotterbak.Ranking.Elo", "Sjotterbak.Ranking.Elo\Sjotterbak.Ranking.Elo.csproj", "{941E8774-3E48-4344-B109-37767210D8AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sjotterbak.Ranking.Glicko", "Sjotterbak.Ranking.Glicko\Sjotterbak.Ranking.Glicko.csproj", "{CA651052-0C52-4167-BADD-DD167BA2E763}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sjotterbak.Ranking.Glicko", "Sjotterbak.Ranking.Glicko\Sjotterbak.Ranking.Glicko.csproj", "{CA651052-0C52-4167-BADD-DD167BA2E763}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
