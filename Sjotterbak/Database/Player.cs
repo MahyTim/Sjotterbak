@@ -41,6 +41,11 @@ namespace Sjotterbak
         {
             return !(player1 == player2);
         }
+
+        public static implicit operator PlayerId(Player p)
+        {
+            return p.Id;
+        }
     }
 
 }

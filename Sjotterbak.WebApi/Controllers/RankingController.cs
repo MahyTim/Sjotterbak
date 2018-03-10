@@ -60,7 +60,8 @@ namespace Sjotterbak.WebApi.Controllers
                 new PlayerTrueSkillRanker(),
                 new WinsPercentageCalculator(),
                 new PlayerDuelEloFideCalculator(),
-                new PlayerDuelEloGaussianCalculator()
+                new PlayerDuelEloGaussianCalculator(),
+                new LongestWinningStreakCalculator()
             };
 
             foreach (var calculator in calculators)
