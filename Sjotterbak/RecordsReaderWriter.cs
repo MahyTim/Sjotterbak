@@ -41,7 +41,7 @@ namespace Sjotterbak
 
         private static string DetermineNewFileName(string path)
         {
-            var proposedFileName = Path.Combine(path, $"{Prefix}{DateTime.Now:yyyyMMddHHmmss}{DateTime.Now.Ticks}.xml");
+            var proposedFileName = Path.Combine(path, $"{Prefix}{DateTime.UtcNow:yyyyMMddHHmmss}{DateTime.UtcNow.Ticks}.xml");
             if (File.Exists(proposedFileName))
             {
                 return DetermineNewFileName(path);
@@ -56,7 +56,7 @@ namespace Sjotterbak
 
         public void Persist()
         {
-            Records.MetaData.CreatedTimestamp = DateTime.Now;
+            Records.MetaData.CreatedTimestamp = DateTime.UtcNow;
             using (var writeStream = File.OpenWrite(DetermineNewFileName(_path)))
             {
                 new XmlSerializer(typeof(Records)).Serialize(writeStream, Records);

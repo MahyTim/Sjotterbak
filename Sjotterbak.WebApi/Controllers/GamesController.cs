@@ -116,7 +116,7 @@ namespace Sjotterbak.WebApi.Controllers
             _service.Records().AuditLogEntries.Add(new AuditLogEntry()
             {
                 Message = $"New game added: [{newGame.Blue.NamePlayerKeeper}] [{newGame.Blue.NamePlayerAttacker}] against [{newGame.Red.NamePlayerKeeper}] [{newGame.Red.NamePlayerAttacker}] with a score of {newGame.ScoreBlue} - {newGame.ScoreRed}",
-                Timestamp = DateTime.Now
+                Timestamp = DateTime.UtcNow
             });
 
             _service.Persist();

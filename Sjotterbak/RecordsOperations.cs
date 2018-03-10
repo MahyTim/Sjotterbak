@@ -17,7 +17,7 @@ namespace Sjotterbak
                 ScoreTeam2 = scoreTeam2,
                 Team1 = team1,
                 Team2 = team2,
-                CreatedTimestamp = DateTime.Now
+                CreatedTimestamp = DateTime.UtcNow
             };
             records.Games.Add(game);
             return game;
@@ -43,7 +43,7 @@ namespace Sjotterbak
                     },
                     PlayerOne = player1Id,
                     PlayerTwo = player2Id,
-                    CreatedTimestamp = DateTime.Now
+                    CreatedTimestamp = DateTime.UtcNow
                 };
                 records.Teams.Add(team);
                 return team.Id;
@@ -68,7 +68,7 @@ namespace Sjotterbak
                     Value = records.Players.Any() == false ? 0 : records.Players.Max(z => z.Id.Value) + 1
                 },
                 Name = name,
-                CreatedTimestamp = DateTime.Now
+                CreatedTimestamp = DateTime.UtcNow
             };
             records.Players.Add(player);
             return player;
