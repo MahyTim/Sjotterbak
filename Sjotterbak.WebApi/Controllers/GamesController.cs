@@ -110,8 +110,8 @@ namespace Sjotterbak.WebApi.Controllers
             var team1player1 = _service.Records().GetPlayer(newGame.Blue.NamePlayerKeeper);
             var team1player2 = _service.Records().GetPlayer(newGame.Blue.NamePlayerAttacker);
 
-            var team2player1 = _service.Records().GetPlayer(newGame.Blue.NamePlayerKeeper);
-            var team2player2 = _service.Records().GetPlayer(newGame.Blue.NamePlayerAttacker);
+            var team2player1 = _service.Records().GetPlayer(newGame.Red.NamePlayerKeeper);
+            var team2player2 = _service.Records().GetPlayer(newGame.Red.NamePlayerAttacker);
 
 
             var game = _service.Records().AddGame(team1player1, team1player2, team2player1, team2player2, newGame.ScoreBlue, newGame.ScoreRed);

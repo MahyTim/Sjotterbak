@@ -24,27 +24,27 @@ namespace Sjotterbak.Client
             var glenn = AddPlayer("Glenn");
             var arne = AddPlayer("Arne");
 
-            //Game(timmahy, timvermeulen, chris, nick, 16, 14);
-            //Game(timmahy, malik, tomcools, jochem, 15, 13);
-            //Game(timmahy, nick, tomcools, robby, 11, 6);
-            //Game(jeremy, nick, malik, jochem, 11, 4);
-            //Game(nick, chris, toonvermeulen, robby, 11, 3);
-            //Game(toonvermeulen, robby, chris, nick, 4, 11);
-            //Game(chris, jochem, jeremy, robby, 11, 3);
-            //Game(timmahy, jeremy, timvermeulen, malik, 13, 14);
-            //Game(chris, malik, jeremy, tomcools, 11, 6);
-            //Game(jeremy, malik, chris, tomcools, 3, 11);
-            //Game(chris, jochem, jeremy, nick, 12, 10);
-            //Game(jochem, chris, timmahy, malik, 11, 8);
-            //Game(timmahy, jochem, glenn, dieter, 13, 11);
-            //Game(chris, nick, glenn, dieter, 11, 6);
-            //Game(timmahy, chris, dieter, jochem, 6, 11);
-            //Game(jeremy, toonvermeulen, tomcools, arne, 5, 11);
-            //Game(timmahy, nick, tomcools, arne, 11, 4);
-            //Game(timmahy, nick, jeremy, jochem, 11, 1);
-            //Game(timmahy, dieter, chris, nick, 5, 11);
-            //Game(toonvermeulen, robby, chris, nick, 3, 11);
-            //Game(nick, jochem, chris, jeremy, 5, 11);
+            Game(timmahy, timvermeulen, chris, nick, 16, 14);
+            Game(timmahy, malik, tomcools, jochem, 15, 13);
+            Game(timmahy, nick, tomcools, robby, 11, 6);
+            Game(jeremy, nick, malik, jochem, 11, 4);
+            Game(nick, chris, toonvermeulen, robby, 11, 3);
+            Game(toonvermeulen, robby, chris, nick, 4, 11);
+            Game(chris, jochem, jeremy, robby, 11, 3);
+            Game(timmahy, jeremy, timvermeulen, malik, 13, 14);
+            Game(chris, malik, jeremy, tomcools, 11, 6);
+            Game(jeremy, malik, chris, tomcools, 3, 11);
+            Game(chris, jochem, jeremy, nick, 12, 10);
+            Game(jochem, chris, timmahy, malik, 11, 8);
+            Game(timmahy, jochem, glenn, dieter, 13, 11);
+            Game(chris, nick, glenn, dieter, 11, 6);
+            Game(timmahy, chris, dieter, jochem, 6, 11);
+            Game(jeremy, toonvermeulen, tomcools, arne, 5, 11);
+            Game(timmahy, nick, tomcools, arne, 11, 4);
+            Game(timmahy, nick, jeremy, jochem, 11, 1);
+            Game(timmahy, dieter, chris, nick, 5, 11);
+            Game(toonvermeulen, robby, chris, nick, 3, 11);
+            Game(nick, jochem, chris, jeremy, 5, 11);
         }
 
         private static string AddPlayer(string s)
