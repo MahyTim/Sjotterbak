@@ -19,7 +19,7 @@ namespace Sjotterbak
             _path = path;
 
             var fileName = DetermineNewestFile(path);
-            using (var fileStream = File.Open(fileName, System.IO.FileMode.Open))
+            using (var fileStream = File.OpenRead(fileName))
             {
                 Records = new XmlSerializer(typeof(Records)).Deserialize(fileStream) as Records;
             }
