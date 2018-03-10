@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<Records xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Games />
+  <Players>
+    <Player CreatedTimestamp="2018-03-10T11:04:25.0561006+01:00">
+      <Id Value="0" />
+      <Name>Tim V</Name>
+    </Player>
+    <Player CreatedTimestamp="2018-03-10T11:04:30.7684314+01:00">
+      <Id Value="1" />
+      <Name>Tim M</Name>
+    </Player>
+  </Players>
+  <Teams />
+</Records>
