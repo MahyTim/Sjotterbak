@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Sjotterbak.Ranking.TrueSkill\Sjotterbak.Ranking.TrueSkill.csproj" />
     <ProjectReference Include="..\Sjotterbak\Sjotterbak.csproj" />
   </ItemGroup>
 
