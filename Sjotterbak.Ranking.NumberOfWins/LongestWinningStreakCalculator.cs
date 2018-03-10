@@ -9,8 +9,9 @@ namespace Sjotterbak.Ranking.EasyStats
         {
             foreach (var player in data.Players)
             {
-                var games = data.Games.Where(z => z.IsPlayer(player));
                 int longestStreak = 0;
+
+                var games = data.Games.Where(z => z.IsPlayer(player));
                 int currentStreak = 0;
                 foreach (var game in games)
                 {
@@ -20,11 +21,11 @@ namespace Sjotterbak.Ranking.EasyStats
                     }
                     else
                     {
-                        if (currentStreak > longestStreak)
-                        {
-                            longestStreak = currentStreak;
-                        }
                         currentStreak = 0;
+                    }
+                    if (currentStreak > longestStreak)
+                    {
+                        longestStreak = currentStreak;
                     }
                 }
 
