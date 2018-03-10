@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sjotterbak.Ranking.Elo\Sjotterbak.Ranking.Elo.csproj" />
+    <ProjectReference Include="..\Sjotterbak.Ranking.Glicko\Sjotterbak.Ranking.Glicko.csproj" />
     <ProjectReference Include="..\Sjotterbak.Ranking.NumberOfWins\Sjotterbak.Ranking.EasyStats.csproj" />
     <ProjectReference Include="..\Sjotterbak.Ranking.TrueSkill\Sjotterbak.Ranking.TrueSkill.csproj" />
     <ProjectReference Include="..\Sjotterbak\Sjotterbak.csproj" />

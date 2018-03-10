@@ -41,6 +41,19 @@ namespace Sjotterbak
             return Winners(game).Contains(player);
         }
 
+        public static IEnumerable<PlayerId> Losers(this Game game)
+        {
+            if (game.ScoreTeam1 < game.ScoreTeam2)
+            {
+                yield return game.Team1Player1;
+                yield return game.Team1Player2;
+            }
+            else
+            {
+                yield return game.Team2Player1;
+                yield return game.Team2Player2;
+            }
+        }
         public static IEnumerable<PlayerId> Winners(this Game game)
         {
             if (game.ScoreTeam1 > game.ScoreTeam2)

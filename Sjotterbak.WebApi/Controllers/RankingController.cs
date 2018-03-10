@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Sjotterbak.Ranking;
 using Sjotterbak.Ranking.EasyStats;
 using Sjotterbak.Ranking.Elo;
+using Sjotterbak.Ranking.Glicko;
 using Sjotterbak.Ranking.TrueSkill;
 using Sjotterbak.WebApi.Services;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -61,7 +62,8 @@ namespace Sjotterbak.WebApi.Controllers
                 new WinsPercentageCalculator(),
                 new PlayerDuelEloFideCalculator(),
                 new PlayerDuelEloGaussianCalculator(),
-                new LongestWinningStreakCalculator()
+                new LongestWinningStreakCalculator(),
+                new GlickoCalculator()
             };
 
             foreach (var calculator in calculators)
