@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sjotterbak.Ranking;
+using Sjotterbak.Ranking.EasyStats;
 using Sjotterbak.Ranking.TrueSkill;
 using Sjotterbak.WebApi.Services;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -55,7 +56,8 @@ namespace Sjotterbak.WebApi.Controllers
         {
             var calculators = new List<IPlayerRankingCalculator>()
             {
-                new Sjotterbak.Ranking.TrueSkill.PlayerTrueSkillRanker()
+                new Sjotterbak.Ranking.TrueSkill.PlayerTrueSkillRanker(),
+                new WinsPercentageCalculator()
             };
 
             foreach (var calculator in calculators)
