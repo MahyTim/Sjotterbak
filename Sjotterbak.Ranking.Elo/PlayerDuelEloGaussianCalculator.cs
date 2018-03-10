@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Moserware.Skills;
-using Moserware.Skills.TrueSkill;
+using Moserware.Skills.Elo;
 
-namespace Sjotterbak.Ranking.TrueSkill
+namespace Sjotterbak.Ranking.Elo
 {
-
-    public class PlayerTrueSkillRanker : IPlayerRankingCalculator
+    public class PlayerDuelEloGaussianCalculator : IPlayerRankingCalculator
     {
         private readonly GameInfo _gameInfo = GameInfo.DefaultGameInfo;
-        private readonly SkillCalculator _calculator = new TwoTeamTrueSkillCalculator();
+        private readonly SkillCalculator _calculator = new DuellingEloCalculator(new GaussianEloCalculator());
         private readonly Dictionary<Moserware.Skills.Player, Rating> _ratings = new Dictionary<Moserware.Skills.Player, Rating>();
         private readonly Dictionary<PlayerId, Moserware.Skills.Player> _players = new Dictionary<PlayerId, Moserware.Skills.Player>();
 
@@ -55,6 +53,6 @@ namespace Sjotterbak.Ranking.TrueSkill
             }
         }
 
-        public string Name => "TrueSkill";
+        public string Name => "DuelElo - Gaussian";
     }
 }
