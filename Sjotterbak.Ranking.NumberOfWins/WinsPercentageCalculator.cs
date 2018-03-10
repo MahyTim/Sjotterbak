@@ -12,7 +12,7 @@ namespace Sjotterbak.Ranking.EasyStats
                 yield return new PlayerRankingEntry()
                 {
                     PlayerId = player.Id,
-                    Score = data.Games.Count(z => z.IsWinner(player.Id)) / data.Games.Count(z => z.IsPlayer(player.Id)) * 100
+                    Score = (double)data.Games.Count(z => z.IsWinner(player.Id)) / (double)data.Games.Count(z => z.IsPlayer(player.Id)) * 100
                 };
             }
         }
