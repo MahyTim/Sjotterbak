@@ -65,7 +65,7 @@ namespace Sjotterbak.WebApi.Controllers
                 var ranking = new PlayerRanking()
                 {
                     Name = calculator.Name,
-                    Ranking = GetRankingResults(new Sjotterbak.Ranking.TrueSkill.PlayerTrueSkillRanker())
+                    Ranking = GetRankingResults(calculator)
                 };
                 yield return ranking;
             }
