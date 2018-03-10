@@ -9,9 +9,13 @@ namespace Sjotterbak
         [XmlElement]
         public GameId Id { get; set; }
         [XmlElement]
-        public TeamId Team1 { get; set; }
+        public PlayerId Team1Player1 { get; set; }
         [XmlElement]
-        public TeamId Team2 { get; set; }
+        public PlayerId Team1Player2 { get; set; }
+        [XmlElement]
+        public PlayerId Team2Player1 { get; set; }
+        [XmlElement]
+        public PlayerId Team2Player2 { get; set; }
         [XmlAttribute]
         public int ScoreTeam1 { get; set; }
         [XmlAttribute]

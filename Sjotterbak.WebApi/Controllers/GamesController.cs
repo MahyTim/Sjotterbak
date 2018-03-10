@@ -59,13 +59,13 @@ namespace Sjotterbak.WebApi.Controllers
             {
                 Blue = new Team()
                 {
-                    NamePlayerAttacker = data.Expand(data.Expand(z.Team1).PlayerTwo).Name,
-                    NamePlayerKeeper = data.Expand(data.Expand(z.Team1).PlayerOne).Name
+                    NamePlayerAttacker = data.Expand(z.Team1Player2).Name,
+                    NamePlayerKeeper = data.Expand(z.Team1Player1).Name
                 },
                 Red = new Team()
                 {
-                    NamePlayerAttacker = data.Expand(data.Expand(z.Team2).PlayerTwo).Name,
-                    NamePlayerKeeper = data.Expand(data.Expand(z.Team2).PlayerOne).Name
+                    NamePlayerAttacker = data.Expand(z.Team2Player2).Name,
+                    NamePlayerKeeper = data.Expand(z.Team2Player1).Name
                 },
                 ScoreBlue = z.ScoreTeam1,
                 ScoreRed = z.ScoreTeam2
@@ -106,12 +106,15 @@ namespace Sjotterbak.WebApi.Controllers
                     _service.Records().AddPlayer(playerName);
                 }
             }
-            // Form teams
-            var teamBlue = _service.Records().GetOrCreateTeam(newGame.Blue.NamePlayerKeeper, newGame.Blue.NamePlayerAttacker);
-            var teamRed = _service.Records().GetOrCreateTeam(newGame.Red.NamePlayerKeeper, newGame.Red.NamePlayerAttacker);
-            // Write game
 
-            var game = _service.Records().AddGame(teamBlue, teamRed, newGame.ScoreBlue, newGame.ScoreRed);
+            var team1player1 = _service.Records().GetPlayer(newGame.Blue.NamePlayerKeeper);
+            var team1player2 = _service.Records().GetPlayer(newGame.Blue.NamePlayerAttacker);
+
+            var team2player1 = _service.Records().GetPlayer(newGame.Blue.NamePlayerKeeper);
+            var team2player2 = _service.Records().GetPlayer(newGame.Blue.NamePlayerAttacker);
+
+
+            var game = _service.Records().AddGame(team1player1, team1player2, team2player1, team2player2, newGame.ScoreBlue, newGame.ScoreRed);
 
             _service.Records().AuditLogEntries.Add(new AuditLogEntry()
             {

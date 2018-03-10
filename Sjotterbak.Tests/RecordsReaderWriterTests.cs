@@ -41,16 +41,6 @@ namespace Sjotterbak.Tests
                     },
                     Name = "Tim V"
                 });
-                readerWriter.Records.Teams.Add(new Team()
-                {
-                    Id = new TeamId()
-                    {
-                        Value = 1
-                    },
-                    CreatedTimestamp = new DateTime(2009, 1, 1),
-                    PlayerOne = readerWriter.Records.Players.First().Id,
-                    PlayerTwo = readerWriter.Records.Players.Skip(1).First().Id
-                });
 
                 readerWriter.Persist();
             }
@@ -59,7 +49,6 @@ namespace Sjotterbak.Tests
                 Assert.AreEqual(2, readerWriter.Records.Players.Count);
                 Assert.AreEqual("Tim M", readerWriter.Records.Players.First().Name);
                 Assert.AreEqual(1, readerWriter.Records.Players.First().Id.Value);
-                Assert.AreEqual(1, readerWriter.Records.Teams.Count);
             }
         }
     }

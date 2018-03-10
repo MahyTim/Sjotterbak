@@ -10,8 +10,6 @@ namespace Sjotterbak
         public List<Game> Games = new List<Game>();
         [XmlArray]
         public List<Player> Players = new List<Player>();
-        [XmlArray]
-        public List<Team> Teams = new List<Team>();
         [XmlElement]
         public MetaData MetaData = new MetaData();
         [XmlArray]
