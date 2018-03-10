@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<Records xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Games>
+    <Game ScoreTeam1="0" ScoreTeam2="0" CreatedTimestamp="2018-03-10T12:19:44.1335277+01:00">
+      <Id Value="0" />
+      <Team1 Value="0" />
+      <Team2 Value="0" />
+    </Game>
+    <Game ScoreTeam1="11" ScoreTeam2="5" CreatedTimestamp="2018-03-10T12:20:13.6250588+01:00">
+      <Id Value="1" />
+      <Team1 Value="1" />
+      <Team2 Value="2" />
+    </Game>
+  </Games>
+  <Players>
+    <Player CreatedTimestamp="2018-03-10T12:19:44.119853+01:00">
+      <Id Value="0" />
+      <Name>string</Name>
+    </Player>
+    <Player CreatedTimestamp="2018-03-10T12:20:13.6213988+01:00">
+      <Id Value="1" />
+      <Name>TimM</Name>
+    </Player>
+    <Player CreatedTimestamp="2018-03-10T12:20:13.6214181+01:00">
+      <Id Value="2" />
+      <Name>TimV</Name>
+    </Player>
+    <Player CreatedTimestamp="2018-03-10T12:20:13.6214201+01:00">
+      <Id Value="3" />
+      <Name>Nick</Name>
+    </Player>
+    <Player CreatedTimestamp="2018-03-10T12:20:13.6214218+01:00">
+      <Id Value="4" />
+      <Name>Chris</Name>
+    </Player>
+  </Players>
+  <Teams>
+    <Team CreatedTimestamp="2018-03-10T12:19:44.1272421+01:00">
+      <Id Value="0" />
+      <PlayerOne Value="0" />
+      <PlayerTwo Value="0" />
+    </Team>
+    <Team CreatedTimestamp="2018-03-10T12:20:13.6231987+01:00">
+      <Id Value="1" />
+      <PlayerOne Value="1" />
+      <PlayerTwo Value="2" />
+    </Team>
+    <Team CreatedTimestamp="2018-03-10T12:20:13.623218+01:00">
+      <Id Value="2" />
+      <PlayerOne Value="3" />
+      <PlayerTwo Value="4" />
+    </Team>
+  </Teams>
+  <MetaData CreatedTimestamp="2018-03-10T12:20:13.625067+01:00" />
+</Records>

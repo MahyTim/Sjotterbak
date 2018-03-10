@@ -61,26 +61,5 @@ namespace Sjotterbak.WebApi.Controllers
             }
             return Json(new Player(_service.Records().Players.First(z => z.Id.Value == id)));
         }
-
-        // POST: api/Players
-        [HttpPost]
-        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Player))]
-        [SwaggerResponse((int)HttpStatusCode.BadRequest, Description = "If the player already exists or empty name was given")]
-        public IActionResult Post([FromBody]NewPlayer newPlayer)
-        {
-            if (string.IsNullOrWhiteSpace(newPlayer.Name))
-            {
-                return BadRequest("Name is invalid");
-            }
-            var exists = _service.Records().PlayerExists(newPlayer.Name);
-            if (exists)
-            {
-                return BadRequest("Player already exists");
-            }
-
-            var result = _service.Records().AddPlayer(newPlayer.Name);
-            _service.Persist();
-            return Json(result);
-        }
     }
 }

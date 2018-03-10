@@ -11,7 +11,14 @@ namespace Sjotterbak.Tests
         [TestMethod]
         public void Test_Read_Write_Read()
         {
-            var tempPath = Path.GetTempFileName();
+            var tempPath = Path.GetTempPath();
+
+            var tempFilesFromEarlierTests = new DirectoryInfo(tempPath).EnumerateFiles("*.xml", SearchOption.TopDirectoryOnly)
+                .Where(z => z.Name.StartsWith(RecordsReaderWriter.Prefix)).ToArray();
+            foreach (var tempFilesFromEarlierTest in tempFilesFromEarlierTests)
+            {
+                System.IO.File.Delete(tempFilesFromEarlierTest.FullName);
+            }
 
             { // Write
                 var readerWriter = new RecordsReaderWriter(tempPath);

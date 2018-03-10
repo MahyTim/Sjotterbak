@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -9,13 +10,13 @@ namespace Sjotterbak.WebApi.Services
     public class DatabaseService
     {
         private RecordsReaderWriter _readerWriter;
-        private string _filePath;
+        private readonly string _filePath;
 
 
         public DatabaseService(IHostingEnvironment environment)
         {
             string webRootPath = environment.WebRootPath;
-            _filePath = $@"{webRootPath}\App_Data\Database.xml";
+            _filePath = $@"{webRootPath}\App_Data\";
         }
 
         public Records Records()
@@ -26,6 +27,8 @@ namespace Sjotterbak.WebApi.Services
             }
             return _readerWriter.Records;
         }
+
+        
 
         public void Persist()
         {

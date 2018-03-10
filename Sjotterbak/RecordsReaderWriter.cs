@@ -1,22 +1,54 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace Sjotterbak
 {
+    /// <summary>
+    /// Leest en schrijft XML database bestanden
+    /// maakt bij elke save een nieuw bestand aan met een prefix zodat ook
+    /// de historiek beschikbaar is.
+    /// </summary>
     public class RecordsReaderWriter
     {
         private readonly string _path;
+        public const string Prefix = "SjotterbakDatabase-";
         public RecordsReaderWriter(string path)
         {
             _path = path;
-            if (File.Exists(path) == false || new FileInfo(_path).Length == 0)
+
+            var fileName = DetermineNewestFile(path);
+            using (var fileStream = File.Open(fileName, System.IO.FileMode.Open))
+            {
+                Records = new XmlSerializer(typeof(Records)).Deserialize(fileStream) as Records;
+            }
+        }
+
+        private string DetermineNewestFile(string path)
+        {
+            var directory = new DirectoryInfo(path);
+            var files = directory.EnumerateFiles("*.xml", SearchOption.TopDirectoryOnly);
+            var fileName = files.Where(z => z.Name.StartsWith(Prefix, StringComparison.OrdinalIgnoreCase)).OrderByDescending(z => z.Name).FirstOrDefault()?.FullName;
+            if (string.IsNullOrWhiteSpace(fileName) || File.Exists(fileName) == false || new FileInfo(fileName).Length == 0)
             {
                 Records = new Records();
                 Persist();
+                return DetermineNewestFile(path);
             }
-            using (var fileStream = File.Open(path, System.IO.FileMode.Open))
+            return fileName;
+        }
+
+        private static string DetermineNewFileName(string path)
+        {
+            var proposedFileName = Path.Combine(path, $"{Prefix}{DateTime.Now:yyyyMMddHHmmss}{DateTime.Now.Ticks}.xml");
+            if (File.Exists(proposedFileName))
             {
-                Records = new XmlSerializer(typeof(Records)).Deserialize(fileStream) as Records;
+                return DetermineNewFileName(path);
+            }
+            else
+            {
+                return proposedFileName;
             }
         }
 
@@ -24,7 +56,8 @@ namespace Sjotterbak
 
         public void Persist()
         {
-            using (var writeStream = File.OpenWrite(_path))
+            Records.MetaData.CreatedTimestamp = DateTime.Now;
+            using (var writeStream = File.OpenWrite(DetermineNewFileName(_path)))
             {
                 new XmlSerializer(typeof(Records)).Serialize(writeStream, Records);
             }
