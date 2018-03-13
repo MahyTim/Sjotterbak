@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace Sjotterbak.Ranking.EasyStats
 {
+
     public class WinsPercentageCalculator : IPlayerRankingCalculator
     {
         public IEnumerable<PlayerRankingEntry> DetermineRanking(Records data)

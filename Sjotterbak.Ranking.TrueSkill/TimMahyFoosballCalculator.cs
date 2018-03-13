@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Moserware.Skills;
 using Moserware.Skills.TrueSkill;
 
 namespace Sjotterbak.Ranking.TrueSkill
 {
-    public class PlayerTrueSkillCalculator : IPlayerRankingCalculator
+    public class TimMahyFoosballCalculator : IPlayerRankingCalculator
     {
         private readonly GameInfo _gameInfo = GameInfo.DefaultGameInfo;
         private readonly SkillCalculator _calculator = new TwoTeamTrueSkillCalculator();
@@ -29,8 +30,9 @@ namespace Sjotterbak.Ranking.TrueSkill
                     .AddPlayer(_players[game.Team2Player1], _ratings[game.Team2Player1])
                     .AddPlayer(_players[game.Team2Player2], _ratings[game.Team2Player2]);
 
+                var diffScore = Math.Abs(game.ScoreTeam1 - game.ScoreTeam2) + 1;
                 var teams = Moserware.Skills.Teams.Concat(team1, team2);
-                var newRatingsWinLose = _calculator.CalculateNewRatings(_gameInfo, teams, game.ScoreTeam1 > game.ScoreTeam2 ? 1 : 2, game.ScoreTeam2 > game.ScoreTeam1 ? 1 : 2);
+                var newRatingsWinLose = _calculator.CalculateNewRatings(_gameInfo, teams, game.ScoreTeam1 > game.ScoreTeam2 ? 1 : diffScore, game.ScoreTeam2 > game.ScoreTeam1 ? 1 : diffScore);
 
                 foreach (var newRating in newRatingsWinLose)
                 {
@@ -48,6 +50,6 @@ namespace Sjotterbak.Ranking.TrueSkill
             }
         }
 
-        public string Name => "TrueSkill";
+        public string Name => "TimMahyFoosballCalculator";
     }
 }

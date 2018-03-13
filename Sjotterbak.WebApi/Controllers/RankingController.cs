@@ -57,6 +57,7 @@ namespace Sjotterbak.WebApi.Controllers
         {
             var calculators = new List<IPlayerRankingCalculator>()
             {
+                new TimMahyFoosballCalculator(),
                 new PlayerTrueSkillCalculator(),
                 new WinsPercentageCalculator(),
                 new PlayerDuelEloFideCalculator(),
@@ -82,7 +83,7 @@ namespace Sjotterbak.WebApi.Controllers
             return results.OrderByDescending(z => z.Score)
                 .Select(z => new PlayerRankingRow()
                 {
-                    Name =  z.Player.Name,
+                    Name = z.Player.Name,
                     Score = z.Score
                 }).ToArray();
         }
