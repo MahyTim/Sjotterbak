@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Sjotterbak.Ranking;
 using Sjotterbak.Ranking.EasyStats;
@@ -14,6 +15,7 @@ namespace Sjotterbak.WebApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/Rankings")]
+    [EnableCors("AllowAll")]
     public class RankingController : Controller
     {
         public class RankingResult

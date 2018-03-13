@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Sjotterbak.WebApi.Services;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -9,6 +10,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 namespace Sjotterbak.WebApi.Controllers
 {
     [Produces("application/json")]
+    [EnableCors("AllowAll")]
     [Route("api/Games")]
     public class GamesController : Controller
     {

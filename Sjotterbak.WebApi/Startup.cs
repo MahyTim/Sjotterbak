@@ -23,6 +23,18 @@ namespace Sjotterbak.WebApi
             services.AddMvc()
                 .AddControllersAsServices();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials();
+                    });
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Sjotterbak", Version = "v1" });
@@ -46,8 +58,8 @@ namespace Sjotterbak.WebApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sjotterbak");
             });
 
-            app.UseCors(builder =>
-                builder.AllowAnyMethod().AllowAnyOrigin().AllowAnyMethod());
+            app.UseCors("AllowAll");
+
         }
     }
 }
