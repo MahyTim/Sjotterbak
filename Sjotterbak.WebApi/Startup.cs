@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,8 @@ namespace Sjotterbak.WebApi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+
         }
 
         public IConfiguration Configuration { get; }
@@ -42,12 +45,16 @@ namespace Sjotterbak.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
+
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sjotterbak");
             });
+
+            app.UseCors(builder =>
+                builder.AllowAnyMethod().AllowAnyOrigin().AllowAnyMethod());
         }
     }
 }
