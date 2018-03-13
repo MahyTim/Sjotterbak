@@ -44,7 +44,7 @@ namespace Sjotterbak.WebApi.Controllers
         }
 
         // GET: api/Players/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{name}", Name = "Get")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Player))]
         [SwaggerResponse((int)HttpStatusCode.NotFound)]
         public IActionResult Get(string name)
