@@ -11,13 +11,13 @@ namespace Sjotterbak
         [XmlElement]
         public GameId Id { get; set; }
         [XmlElement]
-        public PlayerId Team1Player1 { get; set; }
+        public Player Team1Player1 { get; set; }
         [XmlElement]
-        public PlayerId Team1Player2 { get; set; }
+        public Player Team1Player2 { get; set; }
         [XmlElement]
-        public PlayerId Team2Player1 { get; set; }
+        public Player Team2Player1 { get; set; }
         [XmlElement]
-        public PlayerId Team2Player2 { get; set; }
+        public Player Team2Player2 { get; set; }
         [XmlAttribute]
         public int ScoreTeam1 { get; set; }
         [XmlAttribute]
@@ -28,20 +28,24 @@ namespace Sjotterbak
 
     public static class GameHelper
     {
-        public static bool IsPlayer(this Game game, PlayerId player)
+        public static IEnumerable<Player> GetPlayers(this Game game)
         {
-            return game.Team1Player1 == player
-                   || game.Team1Player2 == player
-                   || game.Team2Player1 == player
-                   || game.Team2Player2 == player;
+            yield return game.Team1Player1;
+            yield return game.Team1Player2;
+            yield return game.Team2Player1;
+            yield return game.Team2Player2;
+        }
+        public static bool IsPlayer(this Game game, Player player)
+        {
+            return GetPlayers(game).Contains(player);
         }
 
-        public static bool IsWinner(this Game game, PlayerId player)
+        public static bool IsWinner(this Game game, Player player)
         {
             return Winners(game).Contains(player);
         }
 
-        public static IEnumerable<PlayerId> Losers(this Game game)
+        public static IEnumerable<Player> Losers(this Game game)
         {
             if (game.ScoreTeam1 < game.ScoreTeam2)
             {
@@ -54,7 +58,7 @@ namespace Sjotterbak
                 yield return game.Team2Player2;
             }
         }
-        public static IEnumerable<PlayerId> Winners(this Game game)
+        public static IEnumerable<Player> Winners(this Game game)
         {
             if (game.ScoreTeam1 > game.ScoreTeam2)
             {

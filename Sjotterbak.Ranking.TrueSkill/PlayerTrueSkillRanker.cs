@@ -9,20 +9,19 @@ namespace Sjotterbak.Ranking.TrueSkill
     {
         private readonly GameInfo _gameInfo = GameInfo.DefaultGameInfo;
         private readonly SkillCalculator _calculator = new TwoTeamTrueSkillCalculator();
-        private readonly Dictionary<PlayerId, Rating> _ratings = new Dictionary<PlayerId, Rating>();
-        private readonly Dictionary<PlayerId, Moserware.Skills.Player> _players = new Dictionary<PlayerId, Moserware.Skills.Player>();
+        private readonly Dictionary<Player, Rating> _ratings = new Dictionary<Player, Rating>();
+        private readonly Dictionary<Player, Moserware.Skills.Player> _players = new Dictionary<Player, Moserware.Skills.Player>();
 
         public IEnumerable<PlayerRankingEntry> DetermineRanking(Records data)
         {
-            foreach (var player in data.Players)
+            foreach (var player in data.GetPlayers())
             {
-                _players[player.Id] = new Moserware.Skills.Player(player.Id);
-                _ratings[player.Id] = GameInfo.DefaultGameInfo.DefaultRating;
+                _players[player] = new Moserware.Skills.Player(player);
+                _ratings[player] = GameInfo.DefaultGameInfo.DefaultRating;
             }
 
             foreach (var game in data.Games)
             {
-
                 var team1 = new Moserware.Skills.Team()
                     .AddPlayer(_players[game.Team1Player1], _ratings[game.Team1Player1])
                     .AddPlayer(_players[game.Team1Player2], _ratings[game.Team1Player2]);
@@ -36,7 +35,7 @@ namespace Sjotterbak.Ranking.TrueSkill
 
                 foreach (var newRating in newRatingsWinLose)
                 {
-                    _ratings[(PlayerId)newRating.Key.Id] = newRating.Value;
+                    _ratings[(Player)newRating.Key.Id] = newRating.Value;
                 }
             }
 
@@ -44,7 +43,7 @@ namespace Sjotterbak.Ranking.TrueSkill
             {
                 yield return new PlayerRankingEntry()
                 {
-                    PlayerId = rating.Key,
+                    Player = rating.Key,
                     Score = rating.Value.Mean
                 };
             }

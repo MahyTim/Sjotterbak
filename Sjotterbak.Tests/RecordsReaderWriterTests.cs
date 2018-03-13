@@ -23,32 +23,21 @@ namespace Sjotterbak.Tests
             { // Write
                 var readerWriter = new RecordsReaderWriter(tempPath);
 
-                readerWriter.Records.Players.Add(new Player()
+                readerWriter.Records.Games.Add(new Game()
                 {
-                    CreatedTimestamp = new DateTime(2001, 1, 1),
-                    Id = new PlayerId()
-                    {
-                        Value = 1
-                    },
-                    Name = "Tim M"
-                });
-                readerWriter.Records.Players.Add(new Player()
-                {
-                    CreatedTimestamp = new DateTime(2003, 1, 1),
-                    Id = new PlayerId()
-                    {
-                        Value = 2
-                    },
-                    Name = "Tim V"
+                    Team1Player1 = new Player("TimM"),
+                    Team1Player2 = new Player("TimV"),
+                    Team2Player1 = new Player("Chris"),
+                    Team2Player2 =  new Player("Jeremy")
                 });
 
                 readerWriter.Persist();
             }
             { // Read
                 var readerWriter = new RecordsReaderWriter(tempPath);
-                Assert.AreEqual(2, readerWriter.Records.Players.Count);
-                Assert.AreEqual("Tim M", readerWriter.Records.Players.First().Name);
-                Assert.AreEqual(1, readerWriter.Records.Players.First().Id.Value);
+                Assert.AreEqual(1, readerWriter.Records.Games.Count);
+                Assert.AreEqual("TimM", readerWriter.Records.GetPlayers().First().Name);
+                Assert.AreEqual(4, readerWriter.Records.GetPlayers().Count());
             }
         }
     }

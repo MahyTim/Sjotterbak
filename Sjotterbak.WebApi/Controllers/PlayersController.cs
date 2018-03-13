@@ -22,11 +22,9 @@ namespace Sjotterbak.WebApi.Controllers
 
             public Player(Sjotterbak.Player player)
             {
-                this.Id = player.Id.Value;
                 this.Name = player.Name;
             }
 
-            public int Id { get; set; }
             public string Name { get; set; }
         }
 
@@ -42,21 +40,25 @@ namespace Sjotterbak.WebApi.Controllers
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(IEnumerable<Player>))]
         public IActionResult Get()
         {
-            return Json(_service.Records().Players.Select(z => new Player(z)));
+            return Json(_service.Records().GetPlayers().Select(z => new Player(z)));
         }
 
         // GET: api/Players/5
         [HttpGet("{id}", Name = "Get")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Player))]
         [SwaggerResponse((int)HttpStatusCode.NotFound)]
-        public IActionResult Get(int id)
+        public IActionResult Get(string name)
         {
-            var exists = _service.Records().Players.Any(z => z.Id.Value == id);
+            var predicate = new Sjotterbak.Player()
+            {
+                Name = name
+            };
+            var exists = _service.Records().GetPlayers().Any(z => z == predicate);
             if (exists == false)
             {
                 return NotFound();
             }
-            return Json(new Player(_service.Records().Players.First(z => z.Id.Value == id)));
+            return Json(new Player(_service.Records().GetPlayers().First(z => z == predicate)));
         }
     }
 }

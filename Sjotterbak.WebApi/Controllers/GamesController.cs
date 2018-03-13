@@ -57,13 +57,13 @@ namespace Sjotterbak.WebApi.Controllers
             {
                 Blue = new Team()
                 {
-                    NamePlayerAttacker = data.Expand(z.Team1Player2).Name,
-                    NamePlayerKeeper = data.Expand(z.Team1Player1).Name
+                    NamePlayerAttacker = z.Team1Player2.Name,
+                    NamePlayerKeeper = z.Team1Player1.Name
                 },
                 Red = new Team()
                 {
-                    NamePlayerAttacker = data.Expand(z.Team2Player2).Name,
-                    NamePlayerKeeper = data.Expand(z.Team2Player1).Name
+                    NamePlayerAttacker = z.Team2Player2.Name,
+                    NamePlayerKeeper = z.Team2Player1.Name
                 },
                 ScoreBlue = z.ScoreTeam1,
                 ScoreRed = z.ScoreTeam2
@@ -96,20 +96,13 @@ namespace Sjotterbak.WebApi.Controllers
                 return BadRequest("Negative scores are not allowed");
             }
 
-            // Create the missing players
-            foreach (var playerName in playerNames)
-            {
-                if (_service.Records().PlayerExists(playerName) == false)
-                {
-                    _service.Records().AddPlayer(playerName);
-                }
-            }
+          
 
-            var team1player1 = _service.Records().GetPlayer(newGame.Blue.NamePlayerKeeper);
-            var team1player2 = _service.Records().GetPlayer(newGame.Blue.NamePlayerAttacker);
+            var team1player1 = new Player(newGame.Blue.NamePlayerKeeper);
+            var team1player2 = new Player(newGame.Blue.NamePlayerAttacker);
 
-            var team2player1 = _service.Records().GetPlayer(newGame.Red.NamePlayerKeeper);
-            var team2player2 = _service.Records().GetPlayer(newGame.Red.NamePlayerAttacker);
+            var team2player1 = new Player(newGame.Red.NamePlayerKeeper);
+            var team2player2 = new Player(newGame.Red.NamePlayerAttacker);
 
 
             var game = _service.Records().AddGame(team1player1, team1player2, team2player1, team2player2, newGame.ScoreBlue, newGame.ScoreRed);

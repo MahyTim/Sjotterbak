@@ -9,8 +9,8 @@ namespace Sjotterbak.Ranking.Glicko
         {
             var calculator = new RatingCalculator();
 
-            var players = new Dictionary<PlayerId, Rating>();
-            foreach (var player in data.Players)
+            var players = new Dictionary<Player, Rating>();
+            foreach (var player in data.GetPlayers())
             {
                 players[player] = new Rating(calculator);
             }
@@ -32,7 +32,7 @@ namespace Sjotterbak.Ranking.Glicko
             {
                 yield return new PlayerRankingEntry()
                 {
-                    PlayerId = player.Key,
+                    Player = player.Key,
                     Score = player.Value.GetRating()
                 };
             }

@@ -7,11 +7,11 @@ namespace Sjotterbak.Ranking.EasyStats
     {
         public IEnumerable<PlayerRankingEntry> DetermineRanking(Records data)
         {
-            foreach (var player in data.Players)
+            foreach (var player in data.GetPlayers())
             {
                 yield return new PlayerRankingEntry()
                 {
-                    PlayerId = player.Id,
+                    Player = player,
                     Score = (double)data.Games.Count(z => z.IsWinner(player)) / (double)data.Games.Count(z => z.IsPlayer(player)) * 100
                 };
             }

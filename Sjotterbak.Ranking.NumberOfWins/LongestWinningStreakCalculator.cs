@@ -7,7 +7,7 @@ namespace Sjotterbak.Ranking.EasyStats
     {
         public IEnumerable<PlayerRankingEntry> DetermineRanking(Records data)
         {
-            foreach (var player in data.Players)
+            foreach (var player in data.GetPlayers())
             {
                 int longestStreak = 0;
 
@@ -31,7 +31,7 @@ namespace Sjotterbak.Ranking.EasyStats
 
                 yield return new PlayerRankingEntry()
                 {
-                    PlayerId = player,
+                    Player = player,
                     Score = longestStreak
                 };
             }

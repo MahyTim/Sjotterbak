@@ -80,7 +80,7 @@ namespace Sjotterbak.WebApi.Controllers
             return results.OrderByDescending(z => z.Score)
                 .Select(z => new PlayerRankingRow()
                 {
-                    Name = _service.Records().Expand(z.PlayerId).Name,
+                    Name =  z.Player.Name,
                     Score = z.Score
                 }).ToArray();
         }

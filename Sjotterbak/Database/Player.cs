@@ -8,11 +8,12 @@ namespace Sjotterbak
     public struct Player : IEquatable<Player>
     {
         [XmlElement]
-        public PlayerId Id { get; set; }
-        [XmlElement]
         public string Name { get; set; }
-        [XmlAttribute]
-        public DateTime CreatedTimestamp { get; set; }
+
+        public Player(string name)
+        {
+            this.Name = name;
+        }
 
         public override bool Equals(object obj)
         {
@@ -41,11 +42,5 @@ namespace Sjotterbak
         {
             return !(player1 == player2);
         }
-
-        public static implicit operator PlayerId(Player p)
-        {
-            return p.Id;
-        }
     }
-
 }

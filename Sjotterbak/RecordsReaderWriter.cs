@@ -13,7 +13,7 @@ namespace Sjotterbak
     public class RecordsReaderWriter
     {
         private readonly string _path;
-        public const string Prefix = "SjotterbakDatabase-V4-";
+        public const string Prefix = "SjotterbakDatabase-V5-";
         public RecordsReaderWriter(string path)
         {
             _path = path;
