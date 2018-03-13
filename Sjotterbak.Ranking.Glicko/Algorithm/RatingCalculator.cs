@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sjotterbak.Ranking.Glicko;
 
 namespace Glicko2
 {

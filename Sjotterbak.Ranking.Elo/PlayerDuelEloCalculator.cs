@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Moserware.Skills;
 using Moserware.Skills.Elo;
-using Moserware.Skills.TrueSkill;
 
 namespace Sjotterbak.Ranking.Elo
 {

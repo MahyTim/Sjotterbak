@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Net;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using RestSharp;
 using Sjotterbak.WebApi.Controllers;
 

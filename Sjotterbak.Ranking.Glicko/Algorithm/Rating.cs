@@ -1,6 +1,4 @@
-﻿using Glicko2;
-
-namespace Glicko2
+﻿namespace Glicko2
 {
     /// <summary>
     /// Holds an individual's Glicko-2 rating.
