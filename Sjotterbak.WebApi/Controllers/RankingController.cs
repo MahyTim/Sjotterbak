@@ -57,8 +57,8 @@ namespace Sjotterbak.WebApi.Controllers
         {
             var calculators = new List<IPlayerRankingCalculator>()
             {
-                new TimMahyFoosballCalculator(),
                 new PlayerTrueSkillCalculator(),
+                new TimMahyFoosballCalculator(),
                 new WinsPercentageCalculator(),
                 new PlayerDuelEloFideCalculator(),
                 new PlayerDuelEloGaussianCalculator(),

@@ -22,21 +22,13 @@ namespace Sjotterbak.Ranking.TrueSkill
 
             foreach (var game in data.Games)
             {
-                var team1 = new Moserware.Skills.Team()
-                    .AddPlayer(_players[game.Team1Player1], _ratings[game.Team1Player1])
-                    .AddPlayer(_players[game.Team1Player2], _ratings[game.Team1Player2]);
-
-                var team2 = new Moserware.Skills.Team()
-                    .AddPlayer(_players[game.Team2Player1], _ratings[game.Team2Player1])
-                    .AddPlayer(_players[game.Team2Player2], _ratings[game.Team2Player2]);
-
-                var diffScore = Math.Abs(game.ScoreTeam1 - game.ScoreTeam2) + 1;
-                var teams = Moserware.Skills.Teams.Concat(team1, team2);
-                var newRatingsWinLose = _calculator.CalculateNewRatings(_gameInfo, teams, game.ScoreTeam1 > game.ScoreTeam2 ? 1 : diffScore, game.ScoreTeam2 > game.ScoreTeam1 ? 1 : diffScore);
-
-                foreach (var newRating in newRatingsWinLose)
+                for (int i = 0; i < game.ScoreTeam1; i++)
                 {
-                    _ratings[(Player)newRating.Key.Id] = newRating.Value;
+                    CalculatePoint(game,true);
+                }
+                for (int i = 0; i < game.ScoreTeam2; i++)
+                {
+                    CalculatePoint(game,false);
                 }
             }
 
@@ -47,6 +39,27 @@ namespace Sjotterbak.Ranking.TrueSkill
                     Player = rating.Key,
                     Score = rating.Value.Mean
                 };
+            }
+        }
+
+        private void CalculatePoint(Game game,bool team1Wins)
+        {
+            var team1 = new Moserware.Skills.Team()
+                .AddPlayer(_players[game.Team1Player1], _ratings[game.Team1Player1])
+                .AddPlayer(_players[game.Team1Player2], _ratings[game.Team1Player2]);
+
+            var team2 = new Moserware.Skills.Team()
+                .AddPlayer(_players[game.Team2Player1], _ratings[game.Team2Player1])
+                .AddPlayer(_players[game.Team2Player2], _ratings[game.Team2Player2]);
+
+
+            var teams = Moserware.Skills.Teams.Concat(team1, team2);
+            var newRatingsWinLose = _calculator.CalculateNewRatings(_gameInfo, teams,
+                team1Wins ? 1 : 2, team1Wins == false ? 1 : 2);
+
+            foreach (var newRating in newRatingsWinLose)
+            {
+                _ratings[(Player) newRating.Key.Id] = newRating.Value;
             }
         }
 
