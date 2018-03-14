@@ -43,6 +43,7 @@ namespace Sjotterbak.Client
             //Game(timmahy, dieter, chris, nick, 5, 11);
             //Game(toonvermeulen, robby, chris, nick, 3, 11);
             //Game(nick, jochem, chris, jeremy, 5, 11);
+            //Game(timmahy, nick, chris, timvermeulen, 11, 9);
         }
 
         private static string AddPlayer(string s)
