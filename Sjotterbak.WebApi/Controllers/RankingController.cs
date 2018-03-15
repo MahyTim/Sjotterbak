@@ -13,6 +13,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Sjotterbak.WebApi.Controllers
 {
+
     [Produces("application/json")]
     [Route("api/Rankings")]
     [EnableCors("AllowAll")]
