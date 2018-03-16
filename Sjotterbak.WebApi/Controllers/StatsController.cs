@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Sjotterbak.Ranking.EasyStats;
 using Sjotterbak.WebApi.Services;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -94,6 +95,9 @@ namespace Sjotterbak.WebApi.Controllers
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PlayerStats[]))]
         public PlayerStats[] GetPlayerStats()
         {
+            var winningStreakRankingCalculator = new LongestWinningStreakCalculator();
+            var winningStreakRanking = winningStreakRankingCalculator.DetermineRanking(_service.Records());
+
             var stats = new List<PlayerStats>();
             foreach (var player in _service.Records().GetPlayers())
             {
@@ -101,7 +105,7 @@ namespace Sjotterbak.WebApi.Controllers
                 {
                     Player = (new PlayersController(_service).Get(player.Name) as JsonResult).Value as PlayersController.Player,
                     NumberOfGames = _service.Records().Games.Count(z => z.IsPlayer(player)),
-                    LongestWinningStreak = 0,
+                    LongestWinningStreak = (int)(winningStreakRanking.Any(z => z.Player == player) == false ? 0 : winningStreakRanking.FirstOrDefault(z => z.Player == player).Score),
                     NumberOfGamesAsAttacker = _service.Records().Games.Count(z => z.IsAttacker(player)),
                     NumberOfGamesAsKeeper = _service.Records().Games.Count(z => z.IsKeeper(player)),
                     NumberOfLosses = _service.Records().Games.Where(z => z.IsPlayer(player)).Count(z => z.IsWinner(player) == false),
