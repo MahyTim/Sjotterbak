@@ -11,7 +11,6 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 namespace Sjotterbak.WebApi.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Stats")]
     [EnableCors("AllowAll")]
     public class StatsController : Controller
     {
@@ -72,7 +71,7 @@ namespace Sjotterbak.WebApi.Controllers
             _service = service;
         }
 
-        [HttpGet]
+        [HttpGet("api/Stats")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Stats))]
         public Stats Get()
         {
@@ -84,14 +83,14 @@ namespace Sjotterbak.WebApi.Controllers
             };
         }
 
-        [HttpGet("/TeamStats")]
+        [HttpGet("api/Stats/TeamStats")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(TeamStats[]))]
         public TeamStats[] GetTeamStats()
         {
             return new[] { new TeamStats() };
         }
 
-        [HttpGet("/PlayerStats")]
+        [HttpGet("api/Stats/PlayerStats")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PlayerStats[]))]
         public IActionResult GetPlayerStats()
         {
@@ -132,7 +131,7 @@ namespace Sjotterbak.WebApi.Controllers
             return stats.ToArray();
         }
 
-        [HttpGet("/PlayerStats/BestPartner/{name}")]
+        [HttpGet("api/Stats/PlayerStats/BestPartner/{name}")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PlayersController.Player))]
         [SwaggerResponse((int)HttpStatusCode.NotFound)]
         public IActionResult GetBestPartner(string name)
@@ -158,7 +157,7 @@ namespace Sjotterbak.WebApi.Controllers
             return bestPartner;
         }
 
-        [HttpGet("/PlayerStats/{name}")]
+        [HttpGet("api/Stats/PlayerStats/{name}")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PlayerStats))]
         [SwaggerResponse((int)HttpStatusCode.NotFound)]
         public IActionResult GetPlayerStats(string name)
@@ -169,7 +168,7 @@ namespace Sjotterbak.WebApi.Controllers
             return Json(stats);
         }
 
-        [HttpGet("/PlayingField")]
+        [HttpGet("api/Stats/PlayingField")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PlayingFieldStats))]
         public PlayingFieldStats GetPlayingFieldStats()
         {
