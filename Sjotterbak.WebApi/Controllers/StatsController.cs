@@ -79,7 +79,7 @@ namespace Sjotterbak.WebApi.Controllers
             return new Stats()
             {
                 PlayingField = GetPlayingFieldStats(),
-                PlayerStats = GetPlayerStats(),
+                PlayerStats = DeterminePlayerStats(),
                 TeamStats = GetTeamStats()
             };
         }
@@ -97,33 +97,39 @@ namespace Sjotterbak.WebApi.Controllers
         {
             try
             {
-                var winningStreakRankingCalculator = new LongestWinningStreakCalculator();
-                var winningStreakRanking = winningStreakRankingCalculator.DetermineRanking(_service.Records());
-
-                var stats = new List<PlayerStats>();
-                foreach (var player in _service.Records().GetPlayers())
-                {
-                    var playerStats = new PlayerStats()
-                    {
-                        Player = (new PlayersController(_service).Get(player.Name) as JsonResult).Value as PlayersController.Player,
-                        NumberOfGames = _service.Records().Games.Count(z => z.IsPlayer(player)),
-                        LongestWinningStreak = (int)(winningStreakRanking.Any(z => z.Player == player) == false ? 0 : winningStreakRanking.FirstOrDefault(z => z.Player == player).Score),
-                        NumberOfGamesAsAttacker = _service.Records().Games.Count(z => z.IsAttacker(player)),
-                        NumberOfGamesAsKeeper = _service.Records().Games.Count(z => z.IsKeeper(player)),
-                        NumberOfLosses = _service.Records().Games.Where(z => z.IsPlayer(player)).Count(z => z.IsWinner(player) == false),
-                        NumberOfWins = _service.Records().Games.Where(z => z.IsPlayer(player)).Count(z => z.IsWinner(player) == true),
-                        NumberOfWinsWithBlue = _service.Records().Games.Where(z => z.IsPlayer(player)).Where(z => z.IsWinner(player)).Count(z => z.IsTeam1Player(player)),
-                        NumberOfWinsWithRed = _service.Records().Games.Where(z => z.IsPlayer(player)).Where(z => z.IsWinner(player)).Count(z => z.IsTeam2Player(player)),
-                        BestPartnerPlayer = GetBestPartner(player.Name),
-                    };
-                    stats.Add(playerStats);
-                }
-                return Json(stats.ToArray());
+                var stats = DeterminePlayerStats();
+                return Json(stats);
             }
             catch (Exception e)
             {
-                return base.StatusCode(500, e);
+                return base.StatusCode(500, e.Message);
             }
+        }
+
+        private PlayerStats[] DeterminePlayerStats()
+        {
+            var winningStreakRankingCalculator = new LongestWinningStreakCalculator();
+            var winningStreakRanking = winningStreakRankingCalculator.DetermineRanking(_service.Records());
+
+            var stats = new List<PlayerStats>();
+            foreach (var player in _service.Records().GetPlayers())
+            {
+                var playerStats = new PlayerStats()
+                {
+                    Player = (new PlayersController(_service).Get(player.Name) as JsonResult).Value as PlayersController.Player,
+                    NumberOfGames = _service.Records().Games.Count(z => z.IsPlayer(player)),
+                    LongestWinningStreak = (int)(winningStreakRanking.Any(z => z.Player == player) == false ? 0 : winningStreakRanking.FirstOrDefault(z => z.Player == player).Score),
+                    NumberOfGamesAsAttacker = _service.Records().Games.Count(z => z.IsAttacker(player)),
+                    NumberOfGamesAsKeeper = _service.Records().Games.Count(z => z.IsKeeper(player)),
+                    NumberOfLosses = _service.Records().Games.Where(z => z.IsPlayer(player)).Count(z => z.IsWinner(player) == false),
+                    NumberOfWins = _service.Records().Games.Where(z => z.IsPlayer(player)).Count(z => z.IsWinner(player) == true),
+                    NumberOfWinsWithBlue = _service.Records().Games.Where(z => z.IsPlayer(player)).Where(z => z.IsWinner(player)).Count(z => z.IsTeam1Player(player)),
+                    NumberOfWinsWithRed = _service.Records().Games.Where(z => z.IsPlayer(player)).Where(z => z.IsWinner(player)).Count(z => z.IsTeam2Player(player)),
+                    BestPartnerPlayer = GetBestPartner(player.Name),
+                };
+                stats.Add(playerStats);
+            }
+            return stats.ToArray();
         }
 
         [HttpGet("/PlayerStats/BestPartner/{name}")]
@@ -148,7 +154,7 @@ namespace Sjotterbak.WebApi.Controllers
         [SwaggerResponse((int)HttpStatusCode.NotFound)]
         public IActionResult GetPlayerStats(string name)
         {
-            var stats = GetPlayerStats().Where(z => new Player(z.Player.Name) == new Player(name)).FirstOrDefault();
+            var stats = DeterminePlayerStats().Where(z => new Player(z.Player.Name) == new Player(name)).FirstOrDefault();
             if (stats == null)
                 return NotFound();
             return Json(stats);
