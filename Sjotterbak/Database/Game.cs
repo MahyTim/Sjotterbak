@@ -35,9 +35,38 @@ namespace Sjotterbak
             yield return game.Team2Player1;
             yield return game.Team2Player2;
         }
+
+        public static Player Partner(this Game game, Player player)
+        {
+            if (IsTeam1Player(game, player))
+            {
+                return game.Team1Player1 == player ? game.Team1Player2 : game.Team1Player1;
+            }
+            return game.Team2Player1 == player ? game.Team2Player2 : game.Team1Player1;
+        }
+
+        public static bool IsTeam1Player(this Game game, Player player)
+        {
+            return game.Team1Player1 == player || game.Team1Player2 == player;
+        }
+
+        public static bool IsTeam2Player(this Game game, Player player)
+        {
+            return game.Team2Player1 == player || game.Team2Player2 == player;
+        }
+
+        public static bool IsAttacker(this Game game, Player player)
+        {
+            return game.Team1Player2 == player || game.Team2Player2 == player;
+        }
+        public static bool IsKeeper(this Game game, Player player)
+        {
+            return game.Team1Player1 == player || game.Team2Player1 == player;
+        }
+
         public static bool IsPlayer(this Game game, Player player)
         {
-            return GetPlayers(game).Contains(player);
+            return IsAttacker(game, player) || IsKeeper(game, player);
         }
 
         public static bool IsWinner(this Game game, Player player)

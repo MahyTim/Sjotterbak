@@ -1,4 +1,7 @@
-﻿using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Sjotterbak.WebApi.Services;
@@ -33,17 +36,23 @@ namespace Sjotterbak.WebApi.Controllers
 
         public class PlayerStats
         {
-            public string Player { get; set; }
+            public PlayersController.Player Player { get; set; }
             public int NumberOfWins { get; set; }
             public int NumberOfLosses { get; set; }
             public int NumberOfGames { get; set; }
-            public double WinPercentage { get; set; }
+            public double WinPercentage
+            {
+                get
+                {
+                    return (double)NumberOfWins / (double)NumberOfGames * 100;
+                }
+            }
             public int NumberOfGamesAsAttacker { get; set; }
             public int NumberOfGamesAsKeeper { get; set; }
             public int LongestWinningStreak { get; set; }
-            public int NumberOfWinsithBlue { get; set; }
+            public int NumberOfWinsWithBlue { get; set; }
             public int NumberOfWinsWithRed { get; set; }
-            public string BestPartnerPlayer { get; set; }
+            public PlayersController.Player BestPartnerPlayer { get; set; }
         }
 
         public class TeamStats
@@ -85,14 +94,53 @@ namespace Sjotterbak.WebApi.Controllers
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PlayerStats[]))]
         public PlayerStats[] GetPlayerStats()
         {
-            return new[] { new PlayerStats() };
+            var stats = new List<PlayerStats>();
+            foreach (var player in _service.Records().GetPlayers())
+            {
+                var playerStats = new PlayerStats()
+                {
+                    Player = (new PlayersController(_service).Get(player.Name) as JsonResult).Value as PlayersController.Player,
+                    NumberOfGames = _service.Records().Games.Count(z => z.IsPlayer(player)),
+                    LongestWinningStreak = 0,
+                    NumberOfGamesAsAttacker = _service.Records().Games.Count(z => z.IsAttacker(player)),
+                    NumberOfGamesAsKeeper = _service.Records().Games.Count(z => z.IsKeeper(player)),
+                    NumberOfLosses = _service.Records().Games.Where(z => z.IsPlayer(player)).Count(z => z.IsWinner(player) == false),
+                    NumberOfWins = _service.Records().Games.Where(z => z.IsPlayer(player)).Count(z => z.IsWinner(player) == true),
+                    NumberOfWinsWithBlue = _service.Records().Games.Where(z => z.IsPlayer(player)).Where(z => z.IsWinner(player)).Count(z => z.IsTeam1Player(player)),
+                    NumberOfWinsWithRed = _service.Records().Games.Where(z => z.IsPlayer(player)).Where(z => z.IsWinner(player)).Count(z => z.IsTeam2Player(player)),
+                    BestPartnerPlayer = GetBestPartner(player.Name),
+                };
+                stats.Add(playerStats);
+            }
+            return stats.ToArray();
+        }
+
+        [HttpGet("/PlayerStats/BestPartner/{name}")]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PlayersController.Player))]
+        [SwaggerResponse((int)HttpStatusCode.NotFound)]
+        public PlayersController.Player GetBestPartner(string name)
+        {
+            var player = new Player(name);
+            var bestPartner = _service.Records().Games
+                .Where(z => z.IsPlayer(player))
+                .Where(z => z.IsWinner(player))
+                .Select(z => z.Partner(player))
+                .GroupBy(z => z)
+                .OrderByDescending(z => z.Count())
+                .Select(z => z.Key)
+                .First();
+            return (new PlayersController(_service).Get(bestPartner.Name) as JsonResult).Value as PlayersController.Player;
         }
 
         [HttpGet("/PlayerStats/{name}")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PlayerStats))]
-        public PlayerStats GetPlayerStats(string name)
+        [SwaggerResponse((int)HttpStatusCode.NotFound)]
+        public IActionResult GetPlayerStats(string name)
         {
-            return new PlayerStats();
+            var stats = GetPlayerStats().Where(z => new Player(z.Player.Name) == new Player(name)).FirstOrDefault();
+            if (stats == null)
+                return NotFound();
+            return Json(stats);
         }
 
         [HttpGet("/PlayingField")]
@@ -117,8 +165,8 @@ namespace Sjotterbak.WebApi.Controllers
                     stats.Red.NumberOfWins++;
                 }
             }
-            stats.Blue.WinPercentage = stats.Blue.NumberOfWins / stats.NumberOfGames * 100;
-            stats.Red.WinPercentage = stats.Red.NumberOfWins / stats.NumberOfGames * 100;
+            stats.Blue.WinPercentage = (double)stats.Blue.NumberOfWins / (double)stats.NumberOfGames * 100;
+            stats.Red.WinPercentage = (double)stats.Red.NumberOfWins / (double)stats.NumberOfGames * 100;
             return stats;
         }
     }
