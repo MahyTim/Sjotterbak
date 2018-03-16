@@ -116,7 +116,7 @@ namespace Sjotterbak.WebApi.Controllers
             {
                 var playerStats = new PlayerStats()
                 {
-                    Player = (new PlayersController(_service).Get(player.Name) as JsonResult).Value as PlayersController.Player,
+                    Player = new PlayersController.Player(player),
                     NumberOfGames = _service.Records().Games.Count(z => z.IsPlayer(player)),
                     LongestWinningStreak = (int)(winningStreakRanking.Any(z => z.Player == player) == false ? 0 : winningStreakRanking.FirstOrDefault(z => z.Player == player).Score),
                     NumberOfGamesAsAttacker = _service.Records().Games.Count(z => z.IsAttacker(player)),
@@ -125,7 +125,7 @@ namespace Sjotterbak.WebApi.Controllers
                     NumberOfWins = _service.Records().Games.Where(z => z.IsPlayer(player)).Count(z => z.IsWinner(player) == true),
                     NumberOfWinsWithBlue = _service.Records().Games.Where(z => z.IsPlayer(player)).Where(z => z.IsWinner(player)).Count(z => z.IsTeam1Player(player)),
                     NumberOfWinsWithRed = _service.Records().Games.Where(z => z.IsPlayer(player)).Where(z => z.IsWinner(player)).Count(z => z.IsTeam2Player(player)),
-                    BestPartnerPlayer = GetBestPartner(player.Name),
+                    BestPartnerPlayer = new PlayersController.Player(DetermineBestPartner(player.Name)),
                 };
                 stats.Add(playerStats);
             }
@@ -135,7 +135,16 @@ namespace Sjotterbak.WebApi.Controllers
         [HttpGet("/PlayerStats/BestPartner/{name}")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PlayersController.Player))]
         [SwaggerResponse((int)HttpStatusCode.NotFound)]
-        public PlayersController.Player GetBestPartner(string name)
+        public IActionResult GetBestPartner(string name)
+        {
+            Player bestPartner = DetermineBestPartner(name);
+            if (bestPartner == null)
+                return NotFound();
+            else
+                return new PlayersController(_service).Get(bestPartner.Name);
+        }
+
+        private Player DetermineBestPartner(string name)
         {
             var player = new Player(name);
             var bestPartner = _service.Records().Games
@@ -145,8 +154,8 @@ namespace Sjotterbak.WebApi.Controllers
                 .GroupBy(z => z)
                 .OrderByDescending(z => z.Count())
                 .Select(z => z.Key)
-                .First();
-            return (new PlayersController(_service).Get(bestPartner.Name) as JsonResult).Value as PlayersController.Player;
+                .FirstOrDefault();
+            return bestPartner;
         }
 
         [HttpGet("/PlayerStats/{name}")]
