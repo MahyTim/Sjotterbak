@@ -93,30 +93,37 @@ namespace Sjotterbak.WebApi.Controllers
 
         [HttpGet("/PlayerStats")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PlayerStats[]))]
-        public PlayerStats[] GetPlayerStats()
+        public IActionResult GetPlayerStats()
         {
-            var winningStreakRankingCalculator = new LongestWinningStreakCalculator();
-            var winningStreakRanking = winningStreakRankingCalculator.DetermineRanking(_service.Records());
-
-            var stats = new List<PlayerStats>();
-            foreach (var player in _service.Records().GetPlayers())
+            try
             {
-                var playerStats = new PlayerStats()
+                var winningStreakRankingCalculator = new LongestWinningStreakCalculator();
+                var winningStreakRanking = winningStreakRankingCalculator.DetermineRanking(_service.Records());
+
+                var stats = new List<PlayerStats>();
+                foreach (var player in _service.Records().GetPlayers())
                 {
-                    Player = (new PlayersController(_service).Get(player.Name) as JsonResult).Value as PlayersController.Player,
-                    NumberOfGames = _service.Records().Games.Count(z => z.IsPlayer(player)),
-                    LongestWinningStreak = (int)(winningStreakRanking.Any(z => z.Player == player) == false ? 0 : winningStreakRanking.FirstOrDefault(z => z.Player == player).Score),
-                    NumberOfGamesAsAttacker = _service.Records().Games.Count(z => z.IsAttacker(player)),
-                    NumberOfGamesAsKeeper = _service.Records().Games.Count(z => z.IsKeeper(player)),
-                    NumberOfLosses = _service.Records().Games.Where(z => z.IsPlayer(player)).Count(z => z.IsWinner(player) == false),
-                    NumberOfWins = _service.Records().Games.Where(z => z.IsPlayer(player)).Count(z => z.IsWinner(player) == true),
-                    NumberOfWinsWithBlue = _service.Records().Games.Where(z => z.IsPlayer(player)).Where(z => z.IsWinner(player)).Count(z => z.IsTeam1Player(player)),
-                    NumberOfWinsWithRed = _service.Records().Games.Where(z => z.IsPlayer(player)).Where(z => z.IsWinner(player)).Count(z => z.IsTeam2Player(player)),
-                    BestPartnerPlayer = GetBestPartner(player.Name),
-                };
-                stats.Add(playerStats);
+                    var playerStats = new PlayerStats()
+                    {
+                        Player = (new PlayersController(_service).Get(player.Name) as JsonResult).Value as PlayersController.Player,
+                        NumberOfGames = _service.Records().Games.Count(z => z.IsPlayer(player)),
+                        LongestWinningStreak = (int)(winningStreakRanking.Any(z => z.Player == player) == false ? 0 : winningStreakRanking.FirstOrDefault(z => z.Player == player).Score),
+                        NumberOfGamesAsAttacker = _service.Records().Games.Count(z => z.IsAttacker(player)),
+                        NumberOfGamesAsKeeper = _service.Records().Games.Count(z => z.IsKeeper(player)),
+                        NumberOfLosses = _service.Records().Games.Where(z => z.IsPlayer(player)).Count(z => z.IsWinner(player) == false),
+                        NumberOfWins = _service.Records().Games.Where(z => z.IsPlayer(player)).Count(z => z.IsWinner(player) == true),
+                        NumberOfWinsWithBlue = _service.Records().Games.Where(z => z.IsPlayer(player)).Where(z => z.IsWinner(player)).Count(z => z.IsTeam1Player(player)),
+                        NumberOfWinsWithRed = _service.Records().Games.Where(z => z.IsPlayer(player)).Where(z => z.IsWinner(player)).Count(z => z.IsTeam2Player(player)),
+                        BestPartnerPlayer = GetBestPartner(player.Name),
+                    };
+                    stats.Add(playerStats);
+                }
+                return Json(stats.ToArray());
             }
-            return stats.ToArray();
+            catch (Exception e)
+            {
+                return base.StatusCode(500, e);
+            }
         }
 
         [HttpGet("/PlayerStats/BestPartner/{name}")]
