@@ -42,5 +42,10 @@ namespace Sjotterbak
         {
             return !(player1 == player2);
         }
+
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
 }
