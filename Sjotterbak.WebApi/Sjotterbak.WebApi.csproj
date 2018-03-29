@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Sjotterbak.Prediction.NuML\Sjotterbak.Prediction.NuML.csproj" />
     <ProjectReference Include="..\Sjotterbak.Ranking.Elo\Sjotterbak.Ranking.Elo.csproj" />
     <ProjectReference Include="..\Sjotterbak.Ranking.Glicko\Sjotterbak.Ranking.Glicko.csproj" />
     <ProjectReference Include="..\Sjotterbak.Ranking.NumberOfWins\Sjotterbak.Ranking.EasyStats.csproj" />
