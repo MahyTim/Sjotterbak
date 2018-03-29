@@ -48,10 +48,10 @@ namespace Sjotterbak.Prediction.NuML
 
         private string DetermineHumanReadableResult(Game game, Record predictedScore)
         {
-            var winningTeam = "Blue";
+            var winningTeam = $"Blue ({game.Team1Player1}, {game.Team1Player2})";
             if (predictedScore.Score < 0)
             {
-                winningTeam = "Red";
+                winningTeam = $"Red ({game.Team2Player1}, {game.Team2Player2})";
             }
             return $"{winningTeam} team wins with a score difference of {Math.Abs(predictedScore.Score)}";
         }
