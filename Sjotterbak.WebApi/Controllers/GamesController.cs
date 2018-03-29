@@ -16,6 +16,24 @@ namespace Sjotterbak.WebApi.Controllers
     {
         public class Game
         {
+            public Game() { }
+
+            public Game(Sjotterbak.Game inner)
+            {
+                Blue = new Team()
+                {
+                    NamePlayerAttacker = inner.Team1Player2.Name,
+                    NamePlayerKeeper = inner.Team1Player1.Name
+                };
+                Red = new Team()
+                {
+                    NamePlayerAttacker = inner.Team2Player2.Name,
+                    NamePlayerKeeper = inner.Team2Player1.Name
+                };
+                ScoreBlue = inner.ScoreTeam1;
+                ScoreRed = inner.ScoreTeam2;
+            }
+
             public Team Blue { get; set; }
             public Team Red { get; set; }
             public int ScoreBlue { get; set; }
@@ -44,36 +62,15 @@ namespace Sjotterbak.WebApi.Controllers
             _service = service;
         }
 
-        // GET: api/Players
         [HttpGet]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(IEnumerable<Game>))]
         public IActionResult Get()
         {
             var data = _service.Records();
-            return Json(data.Games.Select(z => ToContractType(data, z)));
-        }
-
-        private static Game ToContractType(Records data, Sjotterbak.Game z)
-        {
-            return new Game()
-            {
-                Blue = new Team()
-                {
-                    NamePlayerAttacker = z.Team1Player2.Name,
-                    NamePlayerKeeper = z.Team1Player1.Name
-                },
-                Red = new Team()
-                {
-                    NamePlayerAttacker = z.Team2Player2.Name,
-                    NamePlayerKeeper = z.Team2Player1.Name
-                },
-                ScoreBlue = z.ScoreTeam1,
-                ScoreRed = z.ScoreTeam2
-            };
+            return Json(data.Games.Select(z => new Game(z)));
         }
 
 
-        // POST: api/Players
         [HttpPost]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Game))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, Description = "If a player or score is missing or draw score is submitted")]
@@ -98,7 +95,7 @@ namespace Sjotterbak.WebApi.Controllers
                 return BadRequest("Negative scores are not allowed");
             }
 
-          
+
 
             var team1player1 = new Player(newGame.Blue.NamePlayerKeeper);
             var team1player2 = new Player(newGame.Blue.NamePlayerAttacker);
@@ -116,7 +113,7 @@ namespace Sjotterbak.WebApi.Controllers
             });
 
             _service.Persist();
-            return Json(ToContractType(_service.Records(), game));
+            return Json(new Game(game));
         }
     }
 }

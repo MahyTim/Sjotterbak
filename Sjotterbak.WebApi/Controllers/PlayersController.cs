@@ -63,5 +63,24 @@ namespace Sjotterbak.WebApi.Controllers
             }
             return Json(new Player(_service.Records().GetPlayers().First(z => z == predicate)));
         }
+
+        [HttpGet("{name}/Games", Name = "GetGames")]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(GamesController.Game[]))]
+        [SwaggerResponse((int)HttpStatusCode.NotFound)]
+        public IActionResult GetGames(string name)
+        {
+            var predicate = new Sjotterbak.Player()
+            {
+                Name = name
+            };
+            var games = _service.Records().Games.Where(z => z.IsPlayer(predicate)).ToArray();
+            if (games.Any() == false)
+            {
+                return NotFound();
+            }
+            return Json(games.Select(z=> new GamesController.Game(z)));
+        }
+
+        
     }
 }

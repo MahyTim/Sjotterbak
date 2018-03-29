@@ -36,6 +36,11 @@ namespace Sjotterbak.WebApi.Controllers
             public double Score { get; set; }
         }
 
+        public class PlayerScoreEvolution
+        {
+            public PlayersController.Player Player { get; set; }
+            public double[] Scores { get; set; }
+        }
 
         private readonly DatabaseService _service;
 
@@ -44,7 +49,6 @@ namespace Sjotterbak.WebApi.Controllers
             _service = service;
         }
 
-        // GET: api/Players
         [HttpGet]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(RankingResult))]
         public IActionResult Get()
@@ -52,6 +56,41 @@ namespace Sjotterbak.WebApi.Controllers
             var result = new RankingResult();
             result.PlayerRankings = DeterminePlayerRankings().ToArray();
             return Json(result);
+        }
+
+        [HttpGet("PlayerRankingHistory/{name}", Name = "GetPlayerRankingHistoryByName")]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PlayerScoreEvolution))]
+        [SwaggerResponse((int)HttpStatusCode.NotFound)]
+        public PlayerScoreEvolution GetPlayerRankingHistory(string name)
+        {
+            var player = new Player(name);
+            var calculator =
+                new PlayerRankingHistoryCalculator(new PlayerTrueSkillCalculator(), _service.Records());
+            var result = new PlayerScoreEvolution()
+            {
+                Player = new PlayersController.Player(player),
+                Scores = calculator.GetScoringByPlayer(player)
+            };
+            return result;
+        }
+
+        [HttpGet("PlayerRankingHistory", Name = "GetPlayerRankingHistory")]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PlayerScoreEvolution[]))]
+        [SwaggerResponse((int)HttpStatusCode.NotFound)]
+        public PlayerScoreEvolution[] GetPlayerRankingHistory()
+        {
+            var result = new List<PlayerScoreEvolution>();
+            foreach (var player in _service.Records().GetPlayers())
+            {
+                var calculator =
+                    new PlayerRankingHistoryCalculator(new PlayerTrueSkillCalculator(), _service.Records());
+                result.Add(new PlayerScoreEvolution()
+                {
+                    Player = new PlayersController.Player(player),
+                    Scores = calculator.GetScoringByPlayer(player)
+                });
+            }
+            return result.ToArray();
         }
 
         private IEnumerable<PlayerRanking> DeterminePlayerRankings()

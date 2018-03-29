@@ -4,6 +4,7 @@ using Moserware.Skills.TrueSkill;
 
 namespace Sjotterbak.Ranking.TrueSkill
 {
+
     public class PlayerTrueSkillCalculator : IPlayerRankingCalculator
     {
         private readonly GameInfo _gameInfo = GameInfo.DefaultGameInfo;
