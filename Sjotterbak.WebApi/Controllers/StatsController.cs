@@ -4,7 +4,10 @@ using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Moserware.Skills;
+using Moserware.Skills.TrueSkill;
 using Sjotterbak.Ranking.EasyStats;
+using Sjotterbak.Ranking.TrueSkill;
 using Sjotterbak.WebApi.Services;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -145,6 +148,9 @@ namespace Sjotterbak.WebApi.Controllers
 
         private Player DetermineBestPartner(string name)
         {
+            var rankingPerPlayer = new PlayerTrueSkillCalculator().DetermineRanking(_service.Records())
+                .ToDictionary(z => z.Player, z => z.Score);
+
             var player = new Player(name);
             var bestPartner = _service.Records().Games
                 .Where(z => z.IsPlayer(player))
@@ -152,6 +158,7 @@ namespace Sjotterbak.WebApi.Controllers
                 .Select(z => z.Partner(player))
                 .GroupBy(z => z)
                 .OrderByDescending(z => z.Count())
+                .ThenByDescending(z => rankingPerPlayer[z.Key])
                 .Select(z => z.Key)
                 .FirstOrDefault();
             return bestPartner;
@@ -162,7 +169,7 @@ namespace Sjotterbak.WebApi.Controllers
         [SwaggerResponse((int)HttpStatusCode.NotFound)]
         public IActionResult GetPlayerStats(string name)
         {
-            var stats = DeterminePlayerStats().Where(z => new Player(z.Player.Name) == new Player(name)).FirstOrDefault();
+            var stats = DeterminePlayerStats().FirstOrDefault(z => new Player(z.Player.Name) == new Player(name));
             if (stats == null)
                 return NotFound();
             return Json(stats);
