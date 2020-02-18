@@ -11,7 +11,7 @@ namespace Sjotterbak.WebApi.Services
         public DatabaseService(IHostingEnvironment environment)
         {
             string webRootPath = environment.WebRootPath;
-            _filePath = $@"{webRootPath}\App_Data\";
+            _filePath = $@"d:\home\site\wwwroot";
         }
 
         public Records Records()
